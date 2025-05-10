@@ -2,22 +2,37 @@
 import PasswordToggleButton from '@/app/(form-layout)/signup/_signup/PasswordToggleButton';
 import Button from '@/components/common/Button';
 import FormField from '@/components/common/formField';
-import axiosClient from '@/lib/axiosClient';
+import PATHS from '@/constants/paths';
 import usePasswordVisibility from '@/utils/use-password-visibility';
 import { validateConfirmPassword, validatePassword } from '@/utils/validators';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useActionState, useRef, useState } from 'react';
+import { submitResetPassword } from '../actions';
+import { PasswordForm } from '../types/form-data-type';
+import { Toast } from '@/components/common/Toastify';
 
-/**
- * @todo
- * 처음 렌더링 되었을때 인풋이 에러 표시 되어있는 오류 해결
- */
-export default function ResetPasswordForm() {
+interface Props {
+  token: string | string[] | undefined;
+}
+
+export default function ResetPasswordForm({ token }: Props) {
+  const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
   const { isPasswordVisible, togglePasswordVisibility } = usePasswordVisibility();
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<PasswordForm>({
     password: '',
     passwordConfirmation: '',
   });
+
+  const [_unused, action, pending] = useActionState(async () => {
+    await submitResetPassword(token, formData);
+  }, null);
+
+  if (!token) {
+    Toast.error('잘못된 접근입니다. 다시 시도해주세요');
+    router.push(PATHS.HOME);
+    return null;
+  }
 
   const formFieldArray = [
     {
@@ -28,7 +43,10 @@ export default function ResetPasswordForm() {
       value: formData.password,
       isFailure: !validatePassword(formData.password),
       isSuccess: validatePassword(formData.password),
-      errorMessage: '비밀번호를 입력해주세요.',
+      errorMessage:
+        formData.passwordConfirmation === ''
+          ? '비밀번호를 입력해주세요.'
+          : '비밀번호는 8자 이상 20자 이하이며 영문자, 숫자, 특수문자(!@#$%^&*)만 사용할 수 있습니다.',
       placeholder: '비밀번호 (영문, 숫자 포함, 12자 이내)를 입력해주세요.',
       rightSlot: (
         <PasswordToggleButton
@@ -63,13 +81,8 @@ export default function ResetPasswordForm() {
     setFormData((prev) => ({ ...prev, [name]: e.target.value.trim() }));
   };
 
-  const handleSubmitResetPassword = async () => {
-    //토큰값이 어떻게 담기는지 봐야함
-    await axiosClient.patch(`/user/reset-password`, { token: 'string', ...formData });
-  };
-
   return (
-    <div className="flex flex-col gap-10">
+    <form action={action} ref={formRef} className="flex flex-col gap-10">
       <div className="flex flex-col gap-6">
         {formFieldArray.map((field) => {
           return (
@@ -91,13 +104,13 @@ export default function ResetPasswordForm() {
           !(
             validatePassword(formData.password) &&
             validateConfirmPassword(formData.password, formData.passwordConfirmation)
-          )
+          ) || pending
         }
-        onClick={handleSubmitResetPassword}
+        type="submit"
         size="fullWidth"
       >
         재설정
       </Button>
-    </div>
+    </form>
   );
 }

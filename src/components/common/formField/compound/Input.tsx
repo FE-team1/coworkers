@@ -7,7 +7,7 @@ import { InputProps } from '../type';
 export default function Input({
   leftSlot = null,
   rightSlot = null,
-  borderClassName = '',
+  borderClassName = 'border-border',
   className,
   ref,
   ...rest

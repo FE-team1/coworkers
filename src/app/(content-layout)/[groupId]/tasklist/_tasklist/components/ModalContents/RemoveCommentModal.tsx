@@ -22,7 +22,7 @@ export default function RemoveCommentModal({ modalId, onDelete }: Props) {
     <>
       <ModalPortal modalId={modalId}>
         <ModalOverlay modalId={modalId} onClick={() => closeModal(modalId)}>
-          <ModalContainer className="md:max-w-96 lg:max-w-96">
+          <ModalContainer className="md:w-full md:max-w-96">
             <Image src="/icons/danger.icon.svg" alt="!" width={20} height={20} />
             <ModalDescription className="text-md-md text-gray500 mb-6 w-full">
               삭제 후에는 되돌릴 수 없습니다.

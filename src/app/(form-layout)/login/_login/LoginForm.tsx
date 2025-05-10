@@ -10,6 +10,7 @@ import { setClientCookie } from '@/lib/cookie/client';
 import { validateEmail } from '@/utils/validators';
 import { User } from '@/types/user';
 import PATHS from '@/constants/paths';
+import SendResetPassword from './SendResetPassword';
 
 export interface loginApiResponse {
   accessToken: string;
@@ -114,9 +115,7 @@ export default function LoginForm() {
           disabled={isLoggingIn}
         />
       </div>
-      <button type="button" className="text-md-md text-primary mt-3 w-fit self-end underline">
-        비밀번호를 잊으셨나요?
-      </button>
+      <SendResetPassword />
       <Button
         type="submit"
         variant="solid"
