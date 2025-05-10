@@ -12,7 +12,6 @@ interface TaskListItemProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onClick?: () => void;
-  onClickToggleDailyMode?: () => void;
   isDone: boolean;
   name: string;
   commentCount?: number;
@@ -23,7 +22,6 @@ interface TaskListItemProps {
 export default function TaskListItem({
   type = 'taskList',
   onCheckStatusChange,
-  onClickToggleDailyMode,
   onEdit,
   onDelete,
   onClick,
@@ -105,24 +103,13 @@ export default function TaskListItem({
 
             <div className="bg-bg100 mx-2.5 h-2 w-0.25" />
 
-            <div
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation();
-                onClickToggleDailyMode?.();
-              }}
-              className="flex cursor-pointer items-center gap-1.5"
-            >
+            <div className="flex items-center gap-1.5">
               <Repeat
-                color={frequency === 'DAILY' ? 'var(--color-primary)' : 'var(--color-gray500)'}
+                color={frequency === 'ONCE' ? 'var(--color-gray500)' : 'var(--color-primary)'}
               />
-              <span
-                className={clsx(
-                  'text-xs-rg pt-0.5',
-                  frequency === 'DAILY' ? 'text-primary' : 'text-gray500'
-                )}
-              >
-                매일 반복
-              </span>
+              {frequency !== 'ONCE' && (
+                <span className={clsx('text-xs-rg text-primary pt-0.5')}>반복 일정</span>
+              )}
             </div>
           </div>
         </>

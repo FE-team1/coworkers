@@ -12,44 +12,73 @@ interface Props {
   taskId: number;
 }
 
-/**
- * @todo
- * 1. deleteComment 에서 삭제 실패시 에러 핸들링
- * 2. 삭제후 화면 바로 반영
- */
 export default function CommentField({ comment, taskId }: Props) {
   const [isEdit, setIsEdit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const { openModal } = useModalContext();
+  const [currentComment, setCurrentComment] = useState(comment);
+  const [currentContent, setCurrentContent] = useState(comment.content);
 
-  const deleteCommentModalId = `${taskId}-delete-comment`;
+  const deleteCommentModalId = `${comment.id}-delete-comment`;
 
-  const editComment = () => {
+  const onEdit = () => {
     setIsEdit(true);
   };
+  const onEditCancel = () => {
+    setIsEdit(false);
+  };
+
   const deleteComment = async () => {
-    await axiosClient.delete(`/tasks/${taskId}/comments/${comment.id}`);
+    try {
+      await axiosClient.delete(`/tasks/${taskId}/comments/${comment.id}`);
+      setIsDelete(true);
+    } catch {
+      //toast 예정-선향
+    }
   };
 
   const deleteCommentModalPopUp = () => {
     openModal(deleteCommentModalId);
   };
 
-  const onEditCancel = () => {
-    setIsEdit(false);
+  const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCurrentContent(e.currentTarget.value);
   };
+
+  const editComment = async () => {
+    try {
+      await axiosClient.patch(`/tasks/${taskId}/comments/${comment.id}`, {
+        content: currentContent,
+      });
+      setCurrentComment((prev) => ({ ...prev, content: currentContent }));
+      onEditCancel();
+    } catch {
+      //toast 예정-선향
+    }
+  };
+
   return (
     <>
       {isEdit ? (
-        <EditCommentInput comment={comment} onEditCancel={onEditCancel} taskId={taskId} />
+        <EditCommentInput
+          editComment={editComment}
+          onChange={handleChangeComment}
+          onEditCancel={onEditCancel}
+          currentContent={currentContent}
+        />
       ) : (
         <>
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            onDelete={deleteCommentModalPopUp}
-            onEdit={editComment}
-          />
-          <RemoveCommentModal modalId={deleteCommentModalId} onDelete={deleteComment} />
+          {!isDelete && (
+            <>
+              <CommentItem
+                key={comment.id}
+                comment={currentComment}
+                onDelete={deleteCommentModalPopUp}
+                onEdit={onEdit}
+              />
+              <RemoveCommentModal modalId={deleteCommentModalId} onDelete={deleteComment} />
+            </>
+          )}
         </>
       )}
     </>

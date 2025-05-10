@@ -1,21 +1,25 @@
 import DropDown from '@/components/common/dropdown';
-import { DetailTask } from '../../types/task-type';
+import { DetailTaskType } from '../../types/task-type';
 import Image from 'next/image';
 import ProfileBadge from '@/components/profile-badge';
 import Repeat from '@/assets/Repeat';
 import { format } from 'date-fns';
 import clsx from 'clsx';
 import { useTaskModals } from '../../hooks/use-task-modals';
+import { getRepeatDescription } from '../../hooks/format-repeat-schedule';
 
 interface Props {
-  task: DetailTask;
+  task: DetailTaskType;
   isDone: boolean;
 }
 const DROPDOWN_OPTION_LIST = ['수정하기', '삭제하기'];
 
 export default function Content({ task, isDone }: Props) {
-  const { name, doneBy, updatedAt, date, description } = task;
+  const { name, doneBy, updatedAt, date, description, frequency } = task;
   const { popUpDeleteTaskModal, popUpEditTaskModal } = useTaskModals();
+
+  const schedule = frequency === 'MONTHLY' ? task.recurring.monthDay : task.recurring.weekDays;
+  const repeatDescription = getRepeatDescription(frequency, schedule);
 
   const taskDeleteModalId = `${task.id}-delete`;
   const taskEditModalId = `${task.id}-edit`;
@@ -64,10 +68,12 @@ export default function Content({ task, isDone }: Props) {
               <p>{format(date, 'yyyy년 M월 dd일')}</p>
             </div>
             <div className="bg-gray500 h-2 w-[1px]" />
-            <div className="flex items-center gap-1.5">
-              <Repeat width="16" height="16" color="gray" />
-              <p>매일 반복</p>
-            </div>
+            {frequency !== 'ONCE' && (
+              <div className="text-primary flex items-center gap-1.5">
+                <Repeat width="16" height="16" color={'var(--color-primary)'} />
+                {repeatDescription}
+              </div>
+            )}
           </div>
         )}
         <div className="text-md-rg">{description}</div>

@@ -10,19 +10,15 @@ import {
 import Image from 'next/image';
 import Button from '@/components/common/Button';
 import useModalContext from '@/components/common/modal/core/useModalContext';
-import { useTaskActions } from '../../hooks/use-task-actions';
 
 interface Props {
   taskName: string;
-  groupId: string;
-  taskListId: number;
-  taskId: number;
   modalId: string;
+  deleteTask: () => void;
 }
 
-export default function RemoveTaskModal({ taskName, groupId, modalId, taskListId, taskId }: Props) {
+export default function RemoveTaskModal({ taskName, modalId, deleteTask }: Props) {
   const { closeModal } = useModalContext();
-  const { deleteTask } = useTaskActions();
 
   return (
     <>
@@ -47,11 +43,7 @@ export default function RemoveTaskModal({ taskName, groupId, modalId, taskListId
                 >
                   닫기
                 </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => deleteTask(groupId, taskListId, taskId)}
-                  size="fullWidth"
-                >
+                <Button variant="danger" onClick={deleteTask} size="fullWidth">
                   삭제하기
                 </Button>
               </div>

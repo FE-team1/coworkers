@@ -7,14 +7,8 @@ import CommentField from './CommentField';
 import CommentSubmit from '@/assets/CommentSubmit';
 
 interface Props {
-  taskId: number;
+  taskId: number | undefined;
 }
-
-/**
- * 1. fetchComments 에러 핸들링
- * 2. handleChangeComment 에러 핸들링
- * 3. handleSubmitComment 에러 핸들링
- */
 
 export default function DetailTaskCommentField({ taskId }: Props) {
   const [commentValue, setCommentValue] = useState('');
@@ -22,8 +16,12 @@ export default function DetailTaskCommentField({ taskId }: Props) {
 
   const fetchComments = useCallback(async () => {
     if (!taskId) return;
-    const { data } = await axiosClient(`/tasks/${taskId}/comments`);
-    setCurrentComments(data);
+    try {
+      const { data } = await axiosClient(`/tasks/${taskId}/comments`);
+      setCurrentComments(data);
+    } catch {
+      throw Error;
+    }
   }, [taskId]);
 
   useEffect(() => {
@@ -32,13 +30,16 @@ export default function DetailTaskCommentField({ taskId }: Props) {
 
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentValue(e.currentTarget.value);
+    //toast로 에러 핸들링
   };
 
   const handleSubmitComment = async () => {
     const { data } = await axiosClient.post(`/tasks/${taskId}/comments`, { content: commentValue });
     setCurrentComments((prev) => [...prev, data]);
     setCommentValue('');
+    //toast로 에러 핸들링
   };
+  if (!taskId) return;
 
   return (
     <div className="flex flex-col gap-6">

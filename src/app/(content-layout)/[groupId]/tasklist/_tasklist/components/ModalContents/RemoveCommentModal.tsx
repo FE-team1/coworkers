@@ -40,6 +40,7 @@ export default function RemoveCommentModal({ modalId, onDelete }: Props) {
                 <Button
                   variant="danger"
                   onClick={() => {
+                    closeModal(modalId);
                     onDelete();
                   }}
                   size="fullWidth"
