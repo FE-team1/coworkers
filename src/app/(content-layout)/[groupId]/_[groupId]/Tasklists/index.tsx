@@ -1,14 +1,16 @@
-import { Tasklist } from '@/types/tasklist';
 import CreateTaskListModal from '@/app/(content-layout)/[groupId]/tasklist/_tasklist/components/ModalContents/CreateTaskListModal';
 import TasklistItem from '@/app/(content-layout)/[groupId]/_[groupId]/Tasklists/TasklistItem';
+import { Group } from '@/types/group';
+import { Tasklist } from '@/types/tasklist';
 
 type TasklistsProps = {
-  groupId: number | `${number}`;
+  groupId: Group['id'];
   tasklists: Tasklist[];
 };
 
 export default function Tasklists({ groupId, tasklists }: TasklistsProps) {
   const totalTasklistCount = tasklists.length;
+
   return (
     <section>
       <div className="mb-4 flex items-center justify-between">

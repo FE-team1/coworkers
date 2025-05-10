@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import profileIcon from '@/../public/icons/profile-icon.svg';
 import Button from '@/components/common/Button';
 import {
   ModalCloseButton,
@@ -31,18 +30,19 @@ export default function MemberDetailModal({ modalId, member }: MemberDetailModal
       <ModalOverlay modalId={modalId}>
         <ModalContainer>
           <ModalCloseButton modalId={modalId} />
-          <div className="size-11.5">
+          <div className="relative size-11.5">
             {userImage ? (
               <Image
                 src={userImage}
-                className="rounded-full"
+                fill
+                className="rounded-full object-cover"
                 alt={`${userName}님의 프로필 이미지`}
               />
             ) : (
               <Image
                 width={24}
                 height={24}
-                src={profileIcon}
+                src="/icons/profile-icon.svg"
                 alt="기본 프로필 이미지"
                 className="size-full"
               />

@@ -2,9 +2,9 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import TasklistProgressBadge from '@/app/(content-layout)/[groupId]/_[groupId]/Tasklists/TasklistProgressBadge';
 import TasklistItemDropdown from '@/app/(content-layout)/[groupId]/_[groupId]/Tasklists/TasklistItemDropdown';
+import { countDoneTasks } from '@/app/(content-layout)/[groupId]/_[groupId]/taskUtils';
 import PATHS from '@/constants/paths';
 import { Tasklist } from '@/types/tasklist';
-import { Task } from '@/types/task';
 
 type TasklistItemProps = {
   tasklist: Tasklist;
@@ -30,10 +30,6 @@ export default function TasklistItem({ tasklist }: TasklistItemProps) {
     </li>
   );
 }
-
-const countDoneTasks = (tasks: Task[] = []) => {
-  return tasks.filter((task) => Boolean(task.doneAt)).length;
-};
 
 const getTasklistItemColor = (displayIndex: number) => {
   const remain = displayIndex % 4;

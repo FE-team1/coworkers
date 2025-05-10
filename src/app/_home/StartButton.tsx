@@ -18,7 +18,7 @@ export default function StartButton({
     const memberships = res.data?.memberships || [];
 
     router.push(
-      memberships.length > 0 ? `${PATHS.getGroupPath(memberships[0].groupId)}` : `${PATHS.NO_GROUP}`
+      memberships.length > 0 ? `${PATHS.getGroupPath(memberships[0].groupId)}` : `${PATHS.NOGROUP}`
     );
   };
 
