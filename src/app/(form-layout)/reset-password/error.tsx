@@ -2,6 +2,7 @@
 
 import Button from '@/components/common/Button';
 import PATHS from '@/constants/paths';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -13,7 +14,11 @@ export default function ResetPasswordError({ error, reset }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    console.error(error.message);
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    } else {
+      throw error;
+    }
   }, [error]);
 
   return (

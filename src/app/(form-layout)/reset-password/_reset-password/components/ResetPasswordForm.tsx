@@ -10,6 +10,7 @@ import { useActionState, useRef, useState } from 'react';
 import { submitResetPassword } from '../utils/submit-reset-password';
 import { PasswordForm } from '../types/form-data-type';
 import { Toast } from '@/components/common/Toastify';
+import { AUTH_ERROR_MESSAGES } from '@/constants/messages/signup';
 
 interface Props {
   token: string | string[] | undefined;
@@ -18,14 +19,19 @@ interface Props {
 export default function ResetPasswordForm({ token }: Props) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const constant = AUTH_ERROR_MESSAGES;
+
   const { isPasswordVisible, togglePasswordVisibility } = usePasswordVisibility();
   const [formData, setFormData] = useState<PasswordForm>({
     password: '',
     passwordConfirmation: '',
   });
 
-  const [_unused, action, pending] = useActionState(async () => {
-    await submitResetPassword(token, formData);
+  const [_unused, action, pending] = useActionState(() => {
+    submitResetPassword(token, formData).then(() => {
+      Toast.success('비밀 번호 변경에 성공했습니다!');
+      router.push('/login');
+    });
   }, null);
 
   if (!token) {
@@ -44,9 +50,7 @@ export default function ResetPasswordForm({ token }: Props) {
       isFailure: !validatePassword(formData.password),
       isSuccess: validatePassword(formData.password),
       errorMessage:
-        formData.passwordConfirmation === ''
-          ? '비밀번호를 입력해주세요.'
-          : '비밀번호는 8자 이상 20자 이하이며 영문자, 숫자, 특수문자(!@#$%^&*)만 사용할 수 있습니다.',
+        formData.password === '' ? constant.password.required : constant.password.invalid,
       placeholder: '비밀번호 (영문, 숫자 포함, 12자 이내)를 입력해주세요.',
       rightSlot: (
         <PasswordToggleButton
@@ -65,8 +69,8 @@ export default function ResetPasswordForm({ token }: Props) {
       isSuccess: validateConfirmPassword(formData.password, formData.passwordConfirmation),
       errorMessage:
         formData.passwordConfirmation === ''
-          ? '비밀번호를 입력해주세요.'
-          : '비밀번호가 일치하지 않습니다.',
+          ? constant.passwordConfirmation.required
+          : constant.passwordConfirmation.notMatch,
       placeholder: '새 비밀번호를 다시 한번 입력해주세요.',
       rightSlot: (
         <PasswordToggleButton
@@ -78,7 +82,8 @@ export default function ResetPasswordForm({ token }: Props) {
   ] as const;
 
   const handleChangeFormData = (name: string, e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [name]: e.target.value.trim() }));
+    const value = e.target.value.trim();
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -109,7 +114,7 @@ export default function ResetPasswordForm({ token }: Props) {
         type="submit"
         size="fullWidth"
       >
-        재설정
+        {pending ? '...' : '재설정'}
       </Button>
     </form>
   );
