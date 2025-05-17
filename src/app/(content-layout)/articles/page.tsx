@@ -8,6 +8,7 @@ import BestCard from './_articles/components/BestCard';
 import SortToggle from './_articles/components/SortToggle';
 import ArticleSearchBar from './_articles/components/ArticleSearchBar';
 import { Article } from '@/types/article';
+import PATHS from '@/constants/paths';
 
 const mockArticles: Article[] = [
   {
@@ -144,7 +145,10 @@ export default function ArticlesPage() {
         </div>
       </section>
 
-      <Button onClick={() => router.push('/addarticle')} className="fixed right-6 bottom-6">
+      <Button
+        onClick={() => router.push(`${PATHS.ARTICLES.NEW}`)}
+        className="fixed right-6 bottom-6"
+      >
         {/* 나중에 게시글 생성하기 주소에 맞게 수정 필요 */}+ 글쓰기
       </Button>
     </main>
