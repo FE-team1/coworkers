@@ -68,8 +68,9 @@ jobs:
       - name: Build & push Docker image
         id: docker_build_push
         run: |
-          IMAGE_NAME=seokjunk/coworkers:dev-${{ github.sha }}
-            docker build \
+          IMAGE_NAME="seokjunk/coworkers:dev-${{ github.sha }}"
+          echo "Building image: $IMAGE_NAME"
+          docker build \
             --build-arg NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }} \
             --build-arg NEXT_PUBLIC_DEFAULT_IMAGE=${{ vars.NEXT_PUBLIC_DEFAULT_IMAGE }} \
             --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=${{ vars.NEXT_PUBLIC_KAKAO_CLIENT_ID }} \
