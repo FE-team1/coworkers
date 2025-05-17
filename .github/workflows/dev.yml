@@ -71,6 +71,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            if (!context.payload.pull_request || !context.payload.pull_request.number) {
+              throw new Error('Pull request context is missing.');
+            }
             github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
               repo: context.repo.repo,
@@ -83,6 +86,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            if (!context.payload.pull_request || !context.payload.pull_request.number) {
+              throw new Error('Pull request context is missing.');
+            }
             github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
               repo: context.repo.repo,
