@@ -12,7 +12,6 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  console.log(`BASE_URL: ${BASE_URL}`);
   const token = getClientCookie('accessToken');
   if (!token) return config;
   config.headers.set('Authorization', `Bearer ${token}`);
