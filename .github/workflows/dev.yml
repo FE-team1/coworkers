@@ -5,7 +5,8 @@ on:
     branches: [dev]
 
 jobs:
-  build-and-deploy:
+  build:
+    name: Build
     environment:
       name: Preview
     runs-on: ubuntu-latest
@@ -13,7 +14,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Cache npm and Next.js build
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.15.1'
+          cache: 'npm'
+
+      - name: Install deps & build
+        run: npm ci
+
+      - name: Cache Next.js build
         uses: actions/cache@v4
         with:
           path: |
@@ -23,15 +33,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.15.1'
+      - name: Build application (for validation)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_DEFAULT_IMAGE: ${{ vars.NEXT_PUBLIC_DEFAULT_IMAGE }}
+          NEXT_PUBLIC_KAKAO_CLIENT_ID: ${{ vars.NEXT_PUBLIC_KAKAO_CLIENT_ID }}
+          NEXT_PUBLIC_KAKAO_REDIRECT_URI: ${{ vars.NEXT_PUBLIC_KAKAO_REDIRECT_URI }}
 
-      - name: Install deps & build
-        run: |
-          npm ci
-          npm run build
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  dockerize:
+    name: Build and Push Docker Image
+    needs: build
+    environment:
+      name: Preview
+    runs-on: ubuntu-latest
+    outputs:
+      image_name: ${{ steps.docker_build_push.outputs.image_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -40,16 +66,26 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & push Docker image
+        id: docker_build_push
         run: |
-          IMAGE=seokjunk/coworkers:dev-${{ github.sha }}
+          IMAGE_NAME=seokjunk/coworkers:dev-${{ github.sha }}
             docker build \
             --build-arg NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }} \
             --build-arg NEXT_PUBLIC_DEFAULT_IMAGE=${{ vars.NEXT_PUBLIC_DEFAULT_IMAGE }} \
             --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=${{ vars.NEXT_PUBLIC_KAKAO_CLIENT_ID }} \
             --build-arg NEXT_PUBLIC_KAKAO_REDIRECT_URI=${{ vars.NEXT_PUBLIC_KAKAO_REDIRECT_URI }} \
             -t $IMAGE .
-          docker push $IMAGE
+          echo "Pushing image: $IMAGE_NAME"
+          docker push $IMAGE_NAME
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
+  deploy:
+    name: Deploy to Staging EC2
+    needs: dockerize
+    environment:
+      name: Preview
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to Staging EC2
         uses: appleboy/ssh-action@v1
         with:
@@ -57,12 +93,49 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_SSH_KEY }}
           script: |
-            docker pull seokjunk/coworkers:dev-${{ github.sha }}
+            echo "Pulling image: ${{ needs.build.outputs.image_name }}"
+            docker pull ${{ needs.dockerize.outputs.image_name }}
             if docker ps -a --format '{{.Names}}' | grep -q coworkers-staging; then
+              echo "Stopping and removing existing coworkers-staging container"
               docker stop coworkers-staging
               docker rm coworkers-staging
             fi
+            echo "Running new container with image: ${{ needs.dockerize.outputs.image_name }}"
             docker run -d \
               --name coworkers-staging \
               -p 3000:3000 \
-              seokjunk/coworkers:dev-${{ github.sha }}
+              ${{ needs.dockerize.outputs.image_name }}
+            echo "Deployment script finished."
+
+  notify:
+    name: Notify PR
+    needs: [dockerize, deploy]
+    environment:
+      name: Preview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on PR (Success)
+        if: needs.deploy.result == 'success' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "✅ Preview 배포가 성공적으로 완료되었습니다! 🚀\nDocker Image: `${{ needs.dockerize.outputs.image_name }}`\nURL: http://${{ vars.STAGING_URL }}"
+            })
+
+      - name: Comment on PR (Failure)
+        if: needs.deploy.result == 'failure' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "❌ Preview 배포를 실패했습니다. 워크플로우 로그를 확인해주세요."
+            })
