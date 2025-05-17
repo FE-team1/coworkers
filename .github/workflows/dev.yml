@@ -41,10 +41,10 @@ jobs:
 
       - name: Build & push Docker image
         env:
-          NEXT_PUBLIC_API_URL: ${{ env.PREVIEW_NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_DEFAULT_IMAGE: ${{ env.PREVIEW_NEXT_PUBLIC_DEFAULT_IMAGE }}
-          NEXT_PUBLIC_KAKAO_CLIENT_ID: ${{ env.PREVIEW_NEXT_PUBLIC_KAKAO_CLIENT_ID }}
-          NEXT_PUBLIC_KAKAO_REDIRECT_URI: ${{ env.PREVIEW_NEXT_PUBLIC_KAKAO_REDIRECT_URI }}
+          NEXT_PUBLIC_API_URL: ${{ env.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_DEFAULT_IMAGE: ${{ env.NEXT_PUBLIC_DEFAULT_IMAGE }}
+          NEXT_PUBLIC_KAKAO_CLIENT_ID: ${{ env.NEXT_PUBLIC_KAKAO_CLIENT_ID }}
+          NEXT_PUBLIC_KAKAO_REDIRECT_URI: ${{ env.NEXT_PUBLIC_KAKAO_REDIRECT_URI }}
         run: |
           IMAGE=seokjunk/coworkers:dev-${{ github.sha }}
             docker build \
