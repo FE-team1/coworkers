@@ -114,6 +114,8 @@ jobs:
     environment:
       name: Preview
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Comment on PR (Success)
         if: needs.deploy.result == 'success' && github.event_name == 'pull_request'
