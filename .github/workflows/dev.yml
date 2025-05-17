@@ -75,7 +75,7 @@ jobs:
             --build-arg NEXT_PUBLIC_DEFAULT_IMAGE=${{ vars.NEXT_PUBLIC_DEFAULT_IMAGE }} \
             --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=${{ vars.NEXT_PUBLIC_KAKAO_CLIENT_ID }} \
             --build-arg NEXT_PUBLIC_KAKAO_REDIRECT_URI=${{ vars.NEXT_PUBLIC_KAKAO_REDIRECT_URI }} \
-            -t $IMAGE .
+            -t $IMAGE_NAME .
           echo "Pushing image: $IMAGE_NAME"
           docker push $IMAGE_NAME
           echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
