@@ -3,7 +3,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { getServerCookie } from '@/lib/cookie/server';
 import PATHS from '@/constants/paths';
 
-const BASE_URL = process.env.API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const axiosServer = axios.create({
   baseURL: BASE_URL,
