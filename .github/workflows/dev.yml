@@ -40,18 +40,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & push Docker image
-        env:
-          NEXT_PUBLIC_API_URL: ${{ env.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_DEFAULT_IMAGE: ${{ env.NEXT_PUBLIC_DEFAULT_IMAGE }}
-          NEXT_PUBLIC_KAKAO_CLIENT_ID: ${{ env.NEXT_PUBLIC_KAKAO_CLIENT_ID }}
-          NEXT_PUBLIC_KAKAO_REDIRECT_URI: ${{ env.NEXT_PUBLIC_KAKAO_REDIRECT_URI }}
         run: |
           IMAGE=seokjunk/coworkers:dev-${{ github.sha }}
             docker build \
-            --build-arg NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }} \
-            --build-arg NEXT_PUBLIC_DEFAULT_IMAGE=${{ env.NEXT_PUBLIC_DEFAULT_IMAGE }} \
-            --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=${{ env.NEXT_PUBLIC_KAKAO_CLIENT_ID }} \
-            --build-arg NEXT_PUBLIC_KAKAO_REDIRECT_URI=${{ env.NEXT_PUBLIC_KAKAO_REDIRECT_URI }} \
+            --build-arg NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }} \
+            --build-arg NEXT_PUBLIC_DEFAULT_IMAGE=${{ vars.NEXT_PUBLIC_DEFAULT_IMAGE }} \
+            --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=${{ vars.NEXT_PUBLIC_KAKAO_CLIENT_ID }} \
+            --build-arg NEXT_PUBLIC_KAKAO_REDIRECT_URI=${{ vars.NEXT_PUBLIC_KAKAO_REDIRECT_URI }} \
             -t $IMAGE .
           docker push $IMAGE
 
