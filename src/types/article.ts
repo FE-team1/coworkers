@@ -14,6 +14,7 @@ export interface Article {
   likeCount: number;
   commentCount?: number;
   writer: ArticleWriter;
+  isLiked: boolean;
 }
 
 /**

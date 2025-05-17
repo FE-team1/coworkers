@@ -13,7 +13,10 @@ const PATHS = {
   ADDGROUP: '/addgroup',
   JOINGROUP: '/joingroup',
   MYHISTORY: '/myhistory',
-  BOARDS: '/articles',
+  ARTICLES: {
+    BASE: '/articles',
+    NEW: '/articles/new',
+  },
 
   getGroupPath: (groupId: groupId) => `${groupId}`,
   getGroupTaskListPath: (groupId: groupId) => `${groupId}/tasklist`,

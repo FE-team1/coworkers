@@ -10,9 +10,9 @@ export default function ArticleOptionsDropdown() {
       onSelect={(e) => {
         const selected = e.currentTarget.textContent;
         if (selected === '수정하기') {
-          // TODO: 수정하기 로직
+          // TODO: 수정하기
         } else if (selected === '삭제하기') {
-          // TODO: 삭제하기 로직
+          // TODO: 삭제하기
         }
       }}
       dropDownOpenBtn={
