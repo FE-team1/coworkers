@@ -6,6 +6,8 @@ on:
 
 jobs:
   build-and-deploy:
+    environment:
+      name: Preview
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
