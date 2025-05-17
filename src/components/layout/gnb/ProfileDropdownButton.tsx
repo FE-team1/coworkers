@@ -15,7 +15,7 @@ export default function ProfileDropdownButton({ userData }: Props) {
   return (
     <DropDown
       size="lg"
-      placement="top-8 -right-2"
+      placement="top-11 -right-0"
       dropDownOpenBtn={
         <button type="button" className="flex items-center gap-2">
           {userData.image ? (

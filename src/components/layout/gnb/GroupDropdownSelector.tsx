@@ -17,14 +17,17 @@ export default function GroupDropdownSelector({
   selectedGroupId,
   setSelectedGroupId,
 }: GroupDropdownSelectorProps) {
-  const selectedGroup = groups.find((group) => group.id === selectedGroupId);
+  const sortedGroups = [...groups].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  const selectedGroup = sortedGroups.find((group) => group.id === selectedGroupId);
 
   return (
     <OptionSelector
-      placement=""
+      placement="mt-6 right-0"
       size="xl"
       defaultValue={selectedGroup?.name}
-      options={groups.map((group) => (
+      options={sortedGroups.map((group) => (
         <DropDownGroupsItem key={group.id} group={group} />
       ))}
       onSelect={(e) => {

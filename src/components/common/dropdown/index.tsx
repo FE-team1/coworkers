@@ -49,7 +49,7 @@ export default function DropDown({
       {isOpen && (
         <div
           className={clsx(
-            'bg-bg200 border-border absolute z-100 rounded-lg border',
+            'bg-bg200 border-border absolute z-100 rounded-lg border p-2',
             size === 'xl' && 'h-fit px-4 py-4',
             footerBtn && 'flex flex-col gap-4',
             placement
