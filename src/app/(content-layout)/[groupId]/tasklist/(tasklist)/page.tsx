@@ -6,13 +6,13 @@ import calendar from '@/../public/icons/calendar.svg';
 import Image from 'next/image';
 import { addDays, format, subDays } from 'date-fns';
 import { use, useState } from 'react';
-import DateWiseTaskList from './_tasklist/components/DateWiseTaskLists';
-import CreateTaskListModal from './_tasklist/components/ModalContents/CreateTaskListModal';
+import DateWiseTaskList from '../_tasklist/components/DateWiseTaskLists';
+import CreateTaskListModal from '../_tasklist/components/ModalContents/CreateTaskListModal';
 import { ko } from 'date-fns/locale';
 import CalendarSelect from '@/components/calendar/CalendarSelect';
 import { useOutSideClickAutoClose } from '@/utils/use-outside-click-auto-close';
-import ManageTaskItemModal from './_tasklist/components/manage-task-item-modal/MangeTaskItemModal';
-import TaskListPageFallBack from './error';
+import ManageTaskItemModal from '../_tasklist/components/manage-task-item-modal/MangeTaskItemModal';
+import TaskListPageFallBack from '../error';
 import { ErrorBoundary } from 'react-error-boundary';
 
 interface Props {

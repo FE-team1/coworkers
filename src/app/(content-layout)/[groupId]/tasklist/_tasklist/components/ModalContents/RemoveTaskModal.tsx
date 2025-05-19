@@ -24,7 +24,7 @@ export default function RemoveTaskModal({ taskName, modalId, deleteTask }: Props
     <>
       <ModalPortal modalId={modalId}>
         <ModalOverlay modalId={modalId} onClick={() => closeModal(modalId)}>
-          <ModalContainer className="md:max-w-96 lg:max-w-96">
+          <ModalContainer className="md:w-full md:max-w-96">
             <Image src="/icons/danger.icon.svg" alt="!" width={20} height={20} />
             <ModalHeading className="mt-4 mb-2">
               {`'${taskName}'`}

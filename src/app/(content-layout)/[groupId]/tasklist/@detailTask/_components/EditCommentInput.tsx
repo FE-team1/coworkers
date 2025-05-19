@@ -1,6 +1,6 @@
 'use client';
 import Button from '@/components/common/Button';
-import { COMMON_TEXTFIELD_STYLE } from '@/components/common/formField/style';
+import Textarea from '@/components/common/formField/compound/Textarea';
 import clsx from 'clsx';
 
 interface Props {
@@ -17,18 +17,26 @@ export default function EditCommentInput({
   onEditCancel,
 }: Props) {
   return (
-    <div className="relative flex flex-col pb-4">
-      <textarea
-        className={(clsx('h-fit min-h-8 w-full resize-none'), COMMON_TEXTFIELD_STYLE)}
+    <div className="flex flex-col items-end gap-2 pb-4">
+      <Textarea
+        className={clsx('h-fit min-h-8 w-full resize-none')}
         value={currentContent}
         onChange={onChange}
         name="content"
+        isBorder={false}
+        height={40}
       />
-      <div className="absolute right-0 bottom-0 flex gap-2">
+      <div className="flex gap-2">
         <button className="text-gray500 text-sm-semi" onClick={onEditCancel}>
           취소
         </button>
-        <Button onClick={editComment} variant="ghost-primary" size="xs" fontSize="14">
+        <Button
+          onClick={editComment}
+          variant="ghost-primary"
+          size="xs"
+          fontSize="14"
+          disabled={currentContent.trim() === ''}
+        >
           수정하기
         </Button>
       </div>

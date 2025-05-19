@@ -22,7 +22,7 @@ export default function SignupSuccessModal({ nickname }: Props) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/teams');
+      router.push('/');
     }, 5000);
 
     return () => clearTimeout(timer);

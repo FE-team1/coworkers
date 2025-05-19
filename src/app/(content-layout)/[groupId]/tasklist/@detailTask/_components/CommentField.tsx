@@ -54,7 +54,8 @@ export default function CommentField({ comment, taskId }: Props) {
       });
       setCurrentComment((prev) => ({ ...prev, content: currentContent }));
       onEditCancel();
-    } catch {
+    } catch (err) {
+      console.error(err);
       Toast.error('댓글 수정에 실패 했습니다.');
     }
   };
