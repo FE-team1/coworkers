@@ -16,14 +16,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="flex min-h-screen flex-col">
+      <body className="flex h-screen flex-col overflow-hidden">
         <ModalProvider>
           <UserProvider>
-            <Header />
             <ToastProvider>
-              <div className="h-full flex-1 overflow-y-auto">{children}</div>
+              <Header />
+              <div id="scroll-container" className="flex-1 overflow-y-auto">
+                {children}
+              </div>
+              <div id="modal-container"></div>
             </ToastProvider>
-            <div id="modal-container"></div>
           </UserProvider>
         </ModalProvider>
       </body>
