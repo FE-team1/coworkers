@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import {
   ModalContainer,
   ModalFooter,
@@ -8,27 +8,30 @@ import {
   ModalOverlay,
   ModalPortal,
 } from '@/components/common/modal';
-import Button from '../common/Button';
 import useModalContext from '@/components/common/modal/core/useModalContext';
-import FormField from '../common/formField';
 import { validatePassword, validateConfirmPassword } from '@/utils/validators';
-import axiosClient from '@/lib/axiosClient';
-import { Toast } from '@/components/common/Toastify';
+import FormField from '@/components/common/formField';
+import Button from '@/components/common/Button';
 import PasswordToggleButton from '@/app/(form-layout)/signup/_signup/PasswordToggleButton';
 import { AUTH_ERROR_MESSAGES } from '@/constants/messages/signup';
-
+import { Toast } from '@/components/common/Toastify';
+import { updateUserPassword } from '../action';
+import BouncingDots from '@/components/common/loading/BouncingDots';
 interface PasswordChangeSuccessModalProps {
   onClose: () => void;
 }
 
 export default function ChangePasswordModal({ onClose }: PasswordChangeSuccessModalProps) {
   const { closeModal } = useModalContext();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [isPending, startTransition] = useTransition();
+  const INITIAL_FORM_DATA = {
     newPassword: '',
     confirmPassword: '',
-  });
+  };
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+
   const setFieldValue = (key: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -36,27 +39,30 @@ export default function ChangePasswordModal({ onClose }: PasswordChangeSuccessMo
     }));
   };
 
-  const handleChangePassword = async () => {
-    const isPasswordValid = validatePassword(formData.newPassword);
-    const isConfirmValid = validateConfirmPassword(formData.newPassword, formData.confirmPassword);
+  const handleChangePassword = () => {
+    startTransition(async () => {
+      const isPasswordValid = validatePassword(formData.newPassword);
+      const isConfirmValid = validateConfirmPassword(
+        formData.newPassword,
+        formData.confirmPassword
+      );
 
-    if (!isPasswordValid || !isConfirmValid) {
-      return;
-    }
+      if (!isPasswordValid || !isConfirmValid) {
+        return;
+      }
 
-    try {
-      await axiosClient.patch('/user/password', {
-        password: formData.newPassword,
-        passwordConfirmation: formData.confirmPassword,
-      });
+      try {
+        await updateUserPassword(formData.newPassword, formData.confirmPassword);
 
-      setFormData({ newPassword: '', confirmPassword: '' });
+        setFormData(INITIAL_FORM_DATA);
 
-      closeModal('change-password');
-      Toast.success('비밀번호 변경 성공');
-    } catch {
-      Toast.error('비밀번호 변경 실패');
-    }
+        closeModal('change-password');
+        Toast.success('비밀번호 변경 성공');
+        onClose();
+      } catch {
+        Toast.error('비밀번호 변경 실패');
+      }
+    });
   };
 
   return (
@@ -87,7 +93,7 @@ export default function ChangePasswordModal({ onClose }: PasswordChangeSuccessMo
                 <FormField
                   field="input"
                   label="새 비밀번호 확인"
-                  placeholder="새 비밀번호를 다시 한 번 입력해 주세요."
+                  placeholder="새 비밀번호를 다시 입력해 주세요."
                   type={showConfirmPassword ? 'text' : 'password'}
                   isFailure={
                     !validateConfirmPassword(formData.newPassword, formData.confirmPassword)
@@ -126,8 +132,9 @@ export default function ChangePasswordModal({ onClose }: PasswordChangeSuccessMo
                     size="fullWidth"
                     className="w-full"
                     onClick={handleChangePassword}
+                    disabled={isPending}
                   >
-                    변경하기
+                    {isPending ? <BouncingDots /> : '변경하기'}
                   </Button>
                 </div>
               </ModalFooter>

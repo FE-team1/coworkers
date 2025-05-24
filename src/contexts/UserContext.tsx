@@ -11,6 +11,7 @@ interface UserContextType {
   fetchUser: () => Promise<void>;
   logoutUser: () => Promise<void>;
   isLoading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -59,7 +60,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [fetchUser]);
 
   return (
-    <UserContext.Provider value={{ user, email, memberships, fetchUser, logoutUser, isLoading }}>
+    <UserContext.Provider
+      value={{ user, email, memberships, fetchUser, logoutUser, isLoading, setUser }}
+    >
       {children}
     </UserContext.Provider>
   );

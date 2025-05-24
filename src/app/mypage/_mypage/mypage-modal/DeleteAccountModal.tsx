@@ -9,8 +9,8 @@ import {
   ModalOverlay,
   ModalPortal,
 } from '@/components/common/modal';
-import Button from '../common/Button';
 import useModalContext from '@/components/common/modal/core/useModalContext';
+import Button from '@/components/common/Button';
 
 export default function DeleteAccountModal() {
   const { closeModal, openModal } = useModalContext();

@@ -31,7 +31,7 @@ export default function NicknameField({
       }}
       rightSlot={
         <div className="flex items-center">
-          <Button size="xs" fontSize="14" className="shrink-0" onClick={onClick}>
+          <Button size="xs" fontSize="14" disabled={!!nicknameError} onClick={onClick}>
             변경하기
           </Button>
         </div>

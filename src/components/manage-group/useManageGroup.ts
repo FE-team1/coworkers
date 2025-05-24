@@ -5,6 +5,7 @@ import axiosClient from '@/lib/axiosClient';
 import { validateEmptyValue } from '@/utils/validators';
 import { Toast } from '../common/Toastify';
 import { ManageGroup } from './ManageGroup';
+import { useUser } from '@/contexts/UserContext';
 
 const GROUP_MESSAGE = {
   EMPTY_GROUP_IMAGE: '프로필 이미지를 넣어주세요.',
@@ -29,6 +30,7 @@ export default function useManageGroup({
 }) {
   const [group, setGroup] = useState<ManageGroup>(groupData ?? INITIAL_GROUP_VALUE);
   const [isSubmit, setIsSubmit] = useState(false);
+  const { fetchUser } = useUser();
 
   const router = useRouter();
 
@@ -104,6 +106,7 @@ export default function useManageGroup({
       })
       .then((result) => {
         router.push(`/${result.data.id}`);
+        fetchUser();
       })
       .catch(() => {
         const action = isEdit ? '수정' : '생성';

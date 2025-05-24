@@ -8,25 +8,24 @@ import { Group } from '@/types/group';
 
 interface GroupDropdownSelectorProps {
   groups: Group[];
-  selectedGroupId: number | null;
+  selectedGroupName: string;
   setSelectedGroupId: (id: number) => void;
 }
 
 export default function GroupDropdownSelector({
   groups,
-  selectedGroupId,
+  selectedGroupName,
   setSelectedGroupId,
 }: GroupDropdownSelectorProps) {
   const sortedGroups = groups.toSorted(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
-  const selectedGroup = sortedGroups.find((group) => group.id === selectedGroupId);
 
   return (
     <OptionSelector
       placement="mt-6 right-0"
       size="xl"
-      defaultValue={selectedGroup?.name}
+      defaultValue={selectedGroupName}
       options={sortedGroups.map((group) => (
         <DropDownGroupsItem key={group.id} group={group} />
       ))}
