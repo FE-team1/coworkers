@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Coworkers
 
-## Getting Started
+## **💡** 프로젝트 개요
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> ▫️ **Coworkers** 는 가족, 회사 등 다양한 커뮤니티에서 일정을 관리하고 공유할 수 있는 웹 애플리케이션입니다.
+▫️ 멤버 초대, 할 일 목록 CRUD, 댓글 작성 등 유기적인 커뮤니티 기능을 제공 합니다.
+> 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**🔹 유저 기능**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 초대된 멤버들만 접근 할 수 있어, 종속된 공간에서 공유와 의견을 나눌 수 있습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🔹  **그룹, 할일목록, 할일 생성**
 
-## Learn More
+- 할일의 반복 설정, 할일 목록 생성 수정등 마감일, 담당자 등 업무에 필요한 내용을 추가할수 있어, 전반적인 내용을 쉽게 공유할 수 있습니다.
+- 댓글 남길 수 있어 실시간으로 현황이나 의견을 공유할 수 있습니다.
+- drag & drop으로 쉽게 할일의 우선순위를 부여하여 사용자의 편의성을 높였습니다.
 
-To learn more about Next.js, take a look at the following resources:
+  
+<br>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## **🛠**  개발환경
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Front-End : Next.js(App Router) , Axios , tailwind, dnd-kit,…**
+- **Back-end :  Swagger**
+- **배포 환경 : Vercel , AWS**
+- **디자인 : Figma**
+- **버전 및 이슈 관리: Github , Git ,Github action**
+- **협업 툴: Discord, Notion**
 
-## Deploy on Vercel
+<br>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📂 폴더 구조
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<img width="720" alt="스크린샷 2025-05-28 오후 4 51 02" src="https://github.com/user-attachments/assets/c456e189-9a4b-4351-aa84-ee78d19965d7" />
+
+
+<br>
+
+# **👥** 프로젝트 팀 구성 및 역할
+
+</aside>
+
+---
+
+## 🧑‍💻👩‍💻👩‍💻👩‍💻 팀원 소개와 역할
+
+| 이름 | 주요 역할 | GitHub |
+| --- | --- | --- |
+|강석준 | modal ,interceptor, 댓글, 랜딩페이지, 로그인 페이지, 그룹 페이지, 자유게시판 생성,수정, AWS 배포, docker 설정, ... | https://github.com/KSJ27  
+|김희진 | button , toast, input, 투두리스트 아이템, 팀생성페이지, 팀 수정페이지, 할일 생성,수정, 자유게시판 상세 페이지, ... | https://github.com/heewls  
+|유선향 | dropdown , svgr, OAuth, 비번 재설정 페이지, 리스트 페이지, 히스토리페이지, 할일 상세, Dnd ,... | https://github.com/grimza99  
+|황혜진 | header , global css, 회원가입, 팀참여하기 페이지, 계정 관리 페이지, 자유게시판 페이지, ... | https://github.com/hhjin1  
+
+
+<br>
+
+# 프로젝트 수행 절차 및 컨벤션
+
+### 프로젝트 기간 : 25.04.21 ~ 25.05.25
+### 리팩토링 기간 : 25.05.28 ~ 25.06.08
+### ⏰ 코어 타임: 월-금, 오후 2시~5시
+
+### 🛠 데일리 스크럼: 월- 토, 오후 2시
+
+### 📌 **오류 발생 시, 1~2시간 내로 해결이 안되면 공유하기!**
+
+### 📖 데일리 스크럼시,  팀 규칙에 따른 해당 팀원이 노션에 진행 내용과 진행 예정을 기록
+

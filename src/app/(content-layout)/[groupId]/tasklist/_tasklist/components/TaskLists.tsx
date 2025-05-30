@@ -14,6 +14,9 @@ interface Props {
 export default function TaskLists({ taskLists, currentTaskListId }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const sortedTaskLists = taskLists.sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
 
   const handleClickChangeCurrentTaskList = async (taskList: TaskList) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -27,7 +30,7 @@ export default function TaskLists({ taskLists, currentTaskListId }: Props) {
   return (
     <ErrorBoundary fallbackRender={({ error }) => <TaskListPageFallBack error={error} />}>
       <div className="scrollbar-hidden flex h-fit max-w-full gap-3 overflow-x-auto overflow-y-hidden">
-        {taskLists.map((taskList) => {
+        {sortedTaskLists.map((taskList) => {
           return (
             <p
               key={taskList.id}

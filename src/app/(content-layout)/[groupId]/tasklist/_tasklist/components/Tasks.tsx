@@ -11,9 +11,9 @@ import TasksWiseTask from './TasksWiseTask';
 interface Props {
   groupId: string;
   tasks: Task[];
-  currentTaskList: TaskList;
+  taskListId: number;
 }
-export default function Tasks({ groupId, tasks, currentTaskList }: Props) {
+export default function Tasks({ groupId, tasks, taskListId }: Props) {
   const [currentTasks, setCurrentTasks] = useState<Task[]>(tasks);
   const [isClient, setIsClient] = useState(false);
 
@@ -26,7 +26,7 @@ export default function Tasks({ groupId, tasks, currentTaskList }: Props) {
     setIsClient(true);
   }, [tasks]);
 
-  const { sensors, handleDragEnd } = useDndKit(currentTasks, currentTaskList!, orderCurrentTasks);
+  const { sensors, handleDragEnd } = useDndKit(currentTasks, taskListId!, orderCurrentTasks);
 
   if (!isClient) return;
 
@@ -43,7 +43,7 @@ export default function Tasks({ groupId, tasks, currentTaskList }: Props) {
               {currentTasks.map((task) => {
                 return (
                   <TasksWiseTask
-                    taskListId={currentTaskList.id}
+                    taskListId={taskListId}
                     task={task}
                     key={task.id}
                     groupId={groupId}

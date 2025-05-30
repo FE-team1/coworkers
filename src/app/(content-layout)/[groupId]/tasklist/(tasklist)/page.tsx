@@ -66,7 +66,7 @@ export default async function Page({ params, searchParams }: Props) {
       <p className="text-lg-bold md:text-xl-bold">할 일</p>
       <DateSwitcher groupId={groupId} date={String(date)} />
       <TaskLists taskLists={taskLists} currentTaskListId={searchParamsTaskListId} />
-      <Tasks groupId={groupId} tasks={tasks} currentTaskList={taskLists[0]} />
+      <Tasks groupId={groupId} tasks={tasks} taskListId={taskListId} />
       <ManageTaskItemModal groupId={Number(groupId)} taskListId={taskListId} />
     </div>
   );
