@@ -4,11 +4,10 @@ import {
   ModalDescription,
   ModalFooter,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import Image from 'next/image';
 import Button from '@/components/common/Button';
-import useModalContext from '@/components/common/modal/core/useModalContext';
 
 interface Props {
   modalId: string;
@@ -17,7 +16,7 @@ interface Props {
   buttonText?: string;
 }
 export default function ErrorModal({ modalId, description, onClick, buttonText }: Props) {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
   const modalButtonText = buttonText ? buttonText : '닫기';
 
   return (

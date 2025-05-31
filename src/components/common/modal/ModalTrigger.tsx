@@ -1,12 +1,11 @@
 'use client';
-import useModalContext from '@/components/common/modal/core/useModalContext';
-
+import { useModal } from '@/contexts/ModalContext';
 interface ModalTriggerProps extends React.ComponentProps<'button'> {
   modalId: string;
 }
 
 export default function ModalTrigger({ modalId, onClick, children, ...props }: ModalTriggerProps) {
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     openModal(modalId);
     if (onClick) {

@@ -7,9 +7,8 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import BouncingDots from '@/components/common/loading/BouncingDots';
 import { Tasklist } from '@/types/tasklist';
 
@@ -27,7 +26,7 @@ export default function TasklistDeleteModal({
   deleteTasklist,
 }: TasklistDeleteModalProps) {
   const { name } = tasklist;
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   const handleClickDeleteButton = async () => {
     deleteTasklist(tasklist);

@@ -7,6 +7,8 @@ import TasklistDeleteModal from '@/app/(content-layout)/[groupId]/(groupId)/_[gr
 import { ModalTrigger } from '@/components/common/modal';
 import { Group } from '@/types/group';
 import { Tasklist } from '@/types/tasklist';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type TasklistsProps = {
   groupId: Group['id'];
@@ -30,6 +32,7 @@ export default function Tasklists({ groupId, tasklists }: TasklistsProps) {
   const tasklistUpdateModalId = selectedTasklist ? `tasklistUpdate-${selectedTasklist.id}` : '';
   const tasklistDeleteModalId = selectedTasklist ? `tasklistDelete-${selectedTasklist.id}` : '';
   const totalTasklistCount = optimisticTasklists.length;
+  const pathname = usePathname();
 
   return (
     <>
@@ -38,9 +41,12 @@ export default function Tasklists({ groupId, tasklists }: TasklistsProps) {
           <h2 className="text-lg-md">
             할 일 목록 <span className="text-lg-rg text-gray500">({totalTasklistCount}개)</span>
           </h2>
-          <ModalTrigger className="text-primary w-fit" modalId={tasklistCreateModalId}>
+          {/* <ModalTrigger className="text-primary w-fit" modalId={tasklistCreateModalId}>
             + 새로운 목록 추가하기
-          </ModalTrigger>
+          </ModalTrigger> */}
+          <Link href={`${pathname}/create`} className="text-primary w-fit">
+            + 새로운 목록 추가하기
+          </Link>
         </div>
         <ol className="flex flex-col gap-4">
           {tasklists.map((tasklist, index) => (

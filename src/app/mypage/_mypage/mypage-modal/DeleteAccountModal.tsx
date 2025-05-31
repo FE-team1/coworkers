@@ -7,13 +7,12 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import Button from '@/components/common/Button';
 
 export default function DeleteAccountModal() {
-  const { closeModal, openModal } = useModalContext();
+  const { closeModal, openModal } = useModal();
 
   return (
     <>

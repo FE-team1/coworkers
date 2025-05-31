@@ -1,4 +1,5 @@
-import { ModalContainer, ModalOverlay, ModalPortal, ModalTrigger } from '@/components/common/modal';
+import { ModalContainer, ModalOverlay, ModalTrigger } from '@/components/common/modal';
+import { ModalPortal } from '@/contexts/ModalContext';
 import ManageTaskItem from '@/components/manage-task-item/components/ManageTaskItem';
 import Plus from '@/assets/Plus';
 import { TaskItemProps } from '@/components/manage-task-item/type';

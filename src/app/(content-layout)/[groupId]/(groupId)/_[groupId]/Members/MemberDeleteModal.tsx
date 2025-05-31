@@ -8,9 +8,8 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import BouncingDots from '@/components/common/loading/BouncingDots';
 import { Member } from '@/types/user';
 
@@ -28,7 +27,7 @@ export default function MemberDeleteModal({
   deleteMember,
 }: MemberDeleteModalProps) {
   const { userName } = member;
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   const handleClickDeleteButton = async () => {
     deleteMember();

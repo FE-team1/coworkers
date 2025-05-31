@@ -9,10 +9,9 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
   ModalTrigger,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import axiosClient from '@/lib/axiosClient';
 import { revalidateTaskLists } from '../../actions/task-actions';
 import { Toast } from '@/components/common/Toastify';
@@ -28,7 +27,7 @@ export default function CreateTaskListModal({ groupId }: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isForceShowError, setIsForceShowError] = useState(false);
 
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   const clearState = () => {
     setCurrentValue('');

@@ -10,7 +10,7 @@ import { Toast } from '@/components/common/Toastify';
 import ChangePasswordModal from './_mypage/mypage-modal/ChangePasswordModal';
 import DeleteAccountModal from './_mypage/mypage-modal/DeleteAccountModal';
 import ConfirmDeleteAccountModal from './_mypage/mypage-modal/ConfirmDeleteAccountModal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal } from '@/contexts/ModalContext';
 import FormField from '@/components/common/formField';
 import { useUser } from '@/contexts/UserContext';
 
@@ -20,7 +20,7 @@ export default function MyPageClient() {
   const [nickname, setNickname] = useState(user?.nickname ?? '');
   const [nicknameError, setNicknameError] = useState('');
   const [password, setPassword] = useState('');
-  const { openModal, closeModal } = useModalContext();
+  const { openModal, closeModal } = useModal();
 
   useEffect(() => {
     if (user?.image) {

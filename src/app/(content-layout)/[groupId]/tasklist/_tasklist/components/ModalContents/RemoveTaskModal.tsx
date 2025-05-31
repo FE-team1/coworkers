@@ -5,12 +5,10 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import Image from 'next/image';
 import Button from '@/components/common/Button';
-import useModalContext from '@/components/common/modal/core/useModalContext';
-
 interface Props {
   taskName: string;
   modalId: string;
@@ -18,7 +16,7 @@ interface Props {
 }
 
 export default function RemoveTaskModal({ taskName, modalId, deleteTask }: Props) {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   return (
     <>

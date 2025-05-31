@@ -10,9 +10,8 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import { Toast } from '@/components/common/Toastify';
 import BouncingDots from '@/components/common/loading/BouncingDots';
 import { getInvitationToken } from '@/api/group';
@@ -32,7 +31,7 @@ export default function MemberInvitationModal({
   isLoading,
   addMember,
 }: MemberInvitationModalProps) {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
   const [isTokenMethod, setIsTokenMethod] = useState(true);
   const [email, setEmail] = useState('');
 

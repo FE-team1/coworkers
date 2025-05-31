@@ -8,9 +8,8 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import { Member } from '@/types/user';
 
 type MemberDetailModalProps = {
@@ -20,7 +19,7 @@ type MemberDetailModalProps = {
 
 export default function MemberDetailModal({ modalId, member }: MemberDetailModalProps) {
   const { userName, userImage, userEmail } = member;
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
   const copyEmailToClipboard = () => {
     navigator.clipboard.writeText(userEmail);
   };

@@ -7,8 +7,8 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
+import { ModalPortal } from '@/contexts/ModalContext';
 import Button from '../common/Button';
 
 interface Props {

@@ -3,8 +3,7 @@ import Image from 'next/image';
 import DropDown from '@/components/common/dropdown';
 import kebabIcon from '@/../public/icons/kebab-icon.svg';
 import { Tasklist } from '@/types/tasklist';
-import useModalContext from '@/components/common/modal/core/useModalContext';
-
+import { useModal } from '@/contexts/ModalContext';
 const ITEM_DROPDOWN_VALUE = ['수정하기', '삭제하기'];
 
 type TasklistItemDropdownProps = {
@@ -16,7 +15,7 @@ export default function TasklistItemDropdown({
   onTriggerClick,
   tasklist,
 }: TasklistItemDropdownProps) {
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
   return (
     <div>
       <DropDown

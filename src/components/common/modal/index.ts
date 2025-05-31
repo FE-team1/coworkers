@@ -1,9 +1,7 @@
-export { default as ModalProvider } from './core/ModalProvider';
-export { default as ModalPortal } from './core/ModalPortal';
-export { default as ModalCloseButton } from './ui/ModalCloseButton';
-export { default as ModalContainer } from './ui/ModalContainer';
-export { default as ModalDescription } from './ui/ModalDescription';
-export { default as ModalFooter } from './ui/ModalFooter';
-export { default as ModalHeading } from './ui/ModalHeading';
-export { default as ModalOverlay } from './ui/ModalOverlay';
-export { default as ModalTrigger } from './ui/ModalTrigger';
+export { default as ModalCloseButton } from './ModalCloseButton';
+export { default as ModalContainer } from './ModalContainer';
+export { default as ModalDescription } from './ModalDescription';
+export { default as ModalFooter } from './ModalFooter';
+export { default as ModalHeading } from './ModalHeading';
+export { default as ModalOverlay } from './ModalOverlay';
+export { default as ModalTrigger } from './ModalTrigger';

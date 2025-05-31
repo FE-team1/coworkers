@@ -4,7 +4,7 @@ import { Frequency } from '@/app/(content-layout)/[groupId]/tasklist/_tasklist/t
 import generateTime from './time-table';
 import { TaskItemProps, TaskItem, Time } from './type';
 import axiosClient from '@/lib/axiosClient';
-import useModalContext from '../common/modal/core/useModalContext';
+import { useModal } from '@/contexts/ModalContext';
 import { validateEmptyValue } from '@/utils/validators';
 import { Toast } from '../common/Toastify';
 import { revalidateTasks } from '@/app/(content-layout)/[groupId]/tasklist/_tasklist/actions/task-actions';
@@ -25,7 +25,7 @@ export default function useManageTaskItem({
   createOrEditModalId,
 }: TaskItemProps) {
   const { am, pm } = generateTime();
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
   const task = detailTask?.recurring;
   const router = useRouter();
 

@@ -8,9 +8,8 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import BouncingDots from '@/components/common/loading/BouncingDots';
 import { validateEmptyValue } from '@/utils/validators';
 import { Tasklist } from '@/types/tasklist';
@@ -29,7 +28,7 @@ export default function TasklistUpdateModal({
   updateTasklist,
 }: TasklistUpdateModalProps) {
   const [name, setName] = useState(tasklist.name);
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);

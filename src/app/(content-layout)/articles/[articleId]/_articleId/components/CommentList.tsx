@@ -8,7 +8,7 @@ import DangerModal from '@/components/danger-modal';
 import { Toast } from '@/components/common/Toastify';
 import CommentItem from '@/components/comment';
 import BouncingDots from '@/components/common/loading/BouncingDots';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal } from '@/contexts/ModalContext';
 import { ArticleComment, ArticleComments } from '@/components/comment/types';
 import { deleteArticleComment, getArticleComments, patchArticleComment } from '../action';
 import { validateEmptyValue } from '@/utils/validators';
@@ -25,7 +25,7 @@ export default function CommentList({
   const [commentIdToDelete, setCommentIdToDelete] = useState<number | null>(null);
   const [commentToEdit, setCommentToEdit] = useState<{ id: number; content: string } | null>(null);
   const [isPending, setIsPending] = useState(false);
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
 
   const [ref, inView] = useInView({ threshold: 1.0 });
   const [moreComments, setMoreComments] = useState<ArticleComment[]>([]);

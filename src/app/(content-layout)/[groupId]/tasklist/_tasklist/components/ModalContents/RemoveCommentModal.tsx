@@ -1,23 +1,15 @@
 'use client';
-import {
-  ModalContainer,
-  ModalDescription,
-  ModalFooter,
-  ModalHeading,
-  ModalOverlay,
-  ModalPortal,
-} from '@/components/common/modal';
+import { ModalContainer, ModalFooter, ModalHeading, ModalOverlay } from '@/components/common/modal';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import Image from 'next/image';
 import Button from '@/components/common/Button';
-import useModalContext from '@/components/common/modal/core/useModalContext';
-
 interface Props {
   modalId: string;
   onDelete: () => void;
 }
 
 export default function RemoveCommentModal({ modalId, onDelete }: Props) {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   return (
     <>

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Header from '@/components/layout/gnb/Header';
-import { ModalProvider } from '@/components/common/modal';
 import ToastProvider from '@/components/common/Toastify/ToasProvider';
 import { UserProvider } from '@/contexts/UserContext';
+import { ModalProvider } from '@/contexts/ModalContext';
 
 export const metadata: Metadata = {
   title: 'Coworkers',

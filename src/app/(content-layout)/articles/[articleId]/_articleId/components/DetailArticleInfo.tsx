@@ -10,7 +10,7 @@ import { GetArticleDetailResponse } from '@/types/article';
 import { formatTimeDistance } from '@/utils/date';
 import LikeToggleButton from '../../../_articles/components/LikeToggleButton';
 import { useUser } from '@/contexts/UserContext';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal } from '@/contexts/ModalContext';
 import DetailArticleDropdown from './DetailArticleDropdown';
 import axiosClient from '@/lib/axiosClient';
 
@@ -19,7 +19,7 @@ const DEFAULT_IMAGE = process.env.NEXT_PUBLIC_DEFAULT_IMAGE;
 export default function DetailArticleInfo({ detail }: { detail: GetArticleDetailResponse }) {
   const router = useRouter();
   const { user } = useUser();
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
   const [isPending, setIsPending] = useState(false);
 
   const handleArticleDelete = async () => {

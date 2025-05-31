@@ -10,10 +10,9 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
   ModalTrigger,
 } from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import axiosClient from '@/lib/axiosClient';
 import { validateEmail } from '@/utils/validators';
 import { AUTH_ERROR_MESSAGES } from '@/constants/messages/signup';
@@ -22,7 +21,7 @@ import BouncingDots from '@/components/common/loading/BouncingDots';
 const redirectUrl = process.env.NEXT_PUBLIC_RESET_PASSWORD;
 
 export default function SendResetPassword() {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
   const modalId = `resetPassword`;
   const errorMessageConstant = AUTH_ERROR_MESSAGES.sendResetPassword;
 

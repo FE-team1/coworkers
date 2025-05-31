@@ -1,6 +1,6 @@
 import Button from '@/components/common/Button';
 import { OptionSelector } from '@/components/common/dropdown/OptionSelector';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal } from '@/contexts/ModalContext';
 import DangerModal from '@/components/danger-modal';
 
 interface Frequency {
@@ -14,7 +14,7 @@ const DELETE_FREQUENCY_MODAL_ID = 'delete-frequency';
 const FREQUENCY_LIST = ['한 번', '매일', '주 반복', '월 반복'];
 
 export default function Frequency({ isEdit, isOnce, handleFrequencyChange }: Frequency) {
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
 
   return isEdit ? (
     <>

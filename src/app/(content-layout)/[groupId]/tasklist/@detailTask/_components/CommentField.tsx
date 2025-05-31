@@ -4,7 +4,7 @@ import { Comment } from '@/components/comment/types';
 import { useState } from 'react';
 import EditCommentInput from './EditCommentInput';
 import axiosClient from '@/lib/axiosClient';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { useModal } from '@/contexts/ModalContext';
 import RemoveCommentModal from '../../_tasklist/components/ModalContents/RemoveCommentModal';
 import { Toast } from '@/components/common/Toastify';
 import { revalidateTasks } from '../../_tasklist/actions/task-actions';
@@ -17,7 +17,7 @@ interface Props {
 export default function CommentField({ comment, taskId }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
   const [currentComment, setCurrentComment] = useState(comment);
   const [currentContent, setCurrentContent] = useState(comment.content);
 

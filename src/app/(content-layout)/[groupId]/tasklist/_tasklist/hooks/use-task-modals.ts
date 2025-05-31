@@ -3,10 +3,9 @@ type TaskModals = {
   popUpEditTaskModal: (modalId: string) => void;
 };
 
-import useModalContext from '@/components/common/modal/core/useModalContext';
-
+import { useModal } from '@/contexts/ModalContext';
 export function useTaskModals(): TaskModals {
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
 
   const popUpEditTaskModal = (modalId: string) => {
     openModal(modalId);

@@ -2,14 +2,8 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  ModalContainer,
-  ModalFooter,
-  ModalHeading,
-  ModalOverlay,
-  ModalPortal,
-} from '@/components/common/modal';
-import useModalContext from '@/components/common/modal/core/useModalContext';
+import { ModalContainer, ModalFooter, ModalHeading, ModalOverlay } from '@/components/common/modal';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import { validatePassword, validateConfirmPassword } from '@/utils/validators';
 import FormField from '@/components/common/formField';
 import Button from '@/components/common/Button';
@@ -26,7 +20,7 @@ interface PasswordChangeSuccessModalProps {
 }
 
 export default function ChangePasswordModal({ onClose }: PasswordChangeSuccessModalProps) {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { logoutUser } = useUser();

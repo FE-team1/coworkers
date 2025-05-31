@@ -5,11 +5,10 @@ import {
   ModalFooter,
   ModalHeading,
   ModalOverlay,
-  ModalPortal,
 } from '@/components/common/modal';
+import { useModal, ModalPortal } from '@/contexts/ModalContext';
 import Image from 'next/image';
 import Button from '@/components/common/Button';
-import useModalContext from '@/components/common/modal/core/useModalContext';
 
 interface DangerModalProps {
   modalId: string;
@@ -29,7 +28,7 @@ export default function DangerModal({
   onConfirm,
   disabled,
 }: DangerModalProps) {
-  const { closeModal } = useModalContext();
+  const { closeModal } = useModal();
 
   const closeButton = closeButtonText ? closeButtonText : '닫기';
 
