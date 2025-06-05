@@ -9,7 +9,7 @@ import {
   ModalOverlay,
 } from '@/components/common/modal';
 import { ModalPortal } from '@/contexts/ModalContext';
-import Button from '../common/Button';
+import Button from '../../../../components/common/Button';
 
 interface Props {
   nickname: string;

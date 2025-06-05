@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateUserNickname, verifyPassword } from './_mypage/action';
 import ProfileImageUploader from './_mypage/ProfileImageUploader';
 import NicknameField from './_mypage/NicknameField';
@@ -20,7 +21,39 @@ export default function MyPageClient() {
   const [nickname, setNickname] = useState(user?.nickname ?? '');
   const [nicknameError, setNicknameError] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { openModal, closeModal } = useModal();
+  const queryClient = useQueryClient();
+
+  const updateNicknameMutation = useMutation({
+    mutationFn: (newNickname: string) => updateUserNickname(newNickname),
+    onSuccess: async () => {
+      await fetchUser();
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      Toast.success('닉네임 변경 성공');
+    },
+    onError: (error) => {
+      const errorObj = error as { response?: { data?: { message?: string } } };
+      const message = errorObj?.response?.data?.message || '닉네임을 변경할 수 없습니다.';
+      setNicknameError(message);
+      Toast.error('닉네임 변경에 실패했습니다.');
+    },
+  });
+
+  const verifyPasswordMutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      verifyPassword(email, password),
+    onSuccess: (res) => {
+      if (res?.accessToken) {
+        setPasswordError('');
+        openModal('change-password');
+      }
+    },
+    onError: () => {
+      setPasswordError('올바른 비밀번호를 입력해 주세요.');
+      Toast.error('비밀번호 인증 실패');
+    },
+  });
 
   useEffect(() => {
     if (user?.image) {
@@ -42,6 +75,16 @@ export default function MyPageClient() {
     return false;
   };
 
+  const handleNicknameUpdate = async () => {
+    if (isSameNickname()) return;
+    updateNicknameMutation.mutate(nickname);
+  };
+
+  const handlePasswordVerification = async () => {
+    if (!email) return;
+    verifyPasswordMutation.mutate({ email, password });
+  };
+
   return (
     <div className="flex justify-center">
       <div className="mx-4 mt-6 w-full max-w-198 min-w-[343px] md:mx-6 lg:mt-7">
@@ -60,35 +103,17 @@ export default function MyPageClient() {
               nicknameError={nicknameError}
               setNickname={setNickname}
               setNicknameError={setNicknameError}
-              onClick={async () => {
-                if (isSameNickname()) return;
-                try {
-                  await updateUserNickname(nickname);
-                  await fetchUser();
-                  Toast.success('닉네임 변경 성공');
-                } catch (error: unknown) {
-                  const errorObj = error as { response?: { data?: { message?: string } } };
-                  const message =
-                    errorObj?.response?.data?.message || '닉네임을 변경할 수 없습니다.';
-                  setNicknameError(message);
-                  Toast.error('닉네임 변경에 실패했습니다.');
-                }
-              }}
+              onClick={handleNicknameUpdate}
+              isLoading={updateNicknameMutation.isPending}
             />
             <FormField field="input" label="이메일" value={email || ''} readOnly />
             <PasswordField
               password={password}
               setPassword={setPassword}
-              onClick={async () => {
-                try {
-                  const res = await verifyPassword(email!, password);
-                  if (res?.accessToken) {
-                    openModal('change-password');
-                  }
-                } catch (e) {
-                  Toast.error('비밀번호 인증 실패');
-                }
-              }}
+              onClick={handlePasswordVerification}
+              isLoading={verifyPasswordMutation.isPending}
+              passwordError={passwordError}
+              setPasswordError={setPasswordError}
             />
             <button
               type="button"
